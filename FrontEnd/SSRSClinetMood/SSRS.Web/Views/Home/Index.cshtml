@@ -1,0 +1,165 @@
+﻿@model SSRS.Web.Models.DashBoarChart.DashboardViewModel
+
+<section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <!-- Card 1 for Stock Count -->
+                <div class="col-6">
+                    <div class="card card-info">
+                        <div class="card-header">
+                            <h3 class="card-title">Current Year Total Product Stock</h3>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="barChart1"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 2 for Quantity Sold -->
+                <div class="col-6">
+                <div class="card card-primary">
+                        <div class="card-header">
+                        <h3 class="card-title">Current Year Total Product Sold</h3>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="barChart2"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Hidden  store data use for js -->
+    <div id="chartData" style="display: none;" 
+         data-product-data="@Html.Raw(Json.Serialize(Model.ProductData))"
+         data-sale-data="@Html.Raw(Json.Serialize(Model.SaleData))">
+     </div>
+
+@section Scripts {
+    <!-- Chart JS -->
+    <script src="~/adminlite/plugins/chart.js/chart.bundle.min.js"></script>
+    <script src="~/adminlite/plugins/chart.js/chart.bundle.js"></script>
+    <script src="~/adminlite/plugins/chart.js/chart.min.js"></script>
+    <script src="~/adminlite/plugins/chart.js/chart.js"></script>
+    <script>
+                $(document).ready(function() {
+            // Get the canvas context for Chart 1 (Stock Count)
+            var barChartCanvas1 = $('#barChart1')[0].getContext('2d');
+
+            // Define an array of tea color tones for Chart 1
+            var chartColors1 = ['#D0E4B7', '#C1D7A3', '#B3D18F', '#A4C97C', '#97C568', '#8BBF54', '#7FB740', '#74AE2C', '#68A81F', '#5D9B13', '#519C07', '#459D00'];
+
+            // Convert month number to month name (e.g. 1 -> "January")
+            var monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+            // Convert the month numbers from the ProductData into month names
+            var monthLabels = $.map(@Html.Raw(Json.Serialize(Model.ProductData.Select(m => m.Month).ToArray())), function(monthNumber) {
+                return monthNames[monthNumber - 1]; // Adjust because JavaScript arrays are 0-indexed
+            });
+
+            // Chart 1 Data (Stock Count)
+            var barChartData1 = {
+                labels: monthLabels,  
+                datasets: [{
+                    label: 'Stock Count',
+                    data: @Html.Raw(Json.Serialize(Model.ProductData.Select(m => m.StockCount).ToArray())),
+                    backgroundColor: chartColors1, 
+                    borderColor: chartColors1, 
+                    borderWidth: 1  
+                }]
+            };
+
+            // Chart options
+            var barChartOptions = {
+                responsive: true,
+                maintainAspectRatio: false,
+                datasetFill: false,
+                scales: {
+                    x: {
+                        grid: {
+                            display: false 
+                        }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            display: true 
+                        },
+                        ticks: {
+                            stepSize: 10
+                        }
+                    }
+                }
+            };
+
+           
+            new Chart(barChartCanvas1, {
+                type: 'bar',
+                data: barChartData1,
+                options: barChartOptions
+            });
+
+
+            var barChartCanvas2 = $('#barChart2')[0].getContext('2d');
+
+            var chartColors2 = ['#4CAF50', '#388E3C', '#2C6B2F', '#1B5224', '#156C1A', '#10701F', '#0B5A22', '#074D1E', '#06411A', '#05361B', '#04301F', '#03271E'];
+
+           
+            var monthLabels2 = $.map(@Html.Raw(Json.Serialize(Model.SaleData.Select(m => m.Month).ToArray())), function(monthNumber) {
+                return monthNames[monthNumber - 1]; 
+            });
+
+          
+            var totalProductSoldData = @Html.Raw(Json.Serialize(Model.SaleData.Select(m => m.TotalProductSold).ToArray()));
+
+            var colorsForBars = $.map(totalProductSoldData, function(_, index) {
+                return chartColors2[index % chartColors2.length]; 
+            });
+
+            // Chart 2 Data (Total Product Sold)
+            var barChartData2 = {
+                labels: monthLabels2,  
+                datasets: [{
+                    label: 'Total Product Sold',
+                    data: totalProductSoldData,  
+                    backgroundColor: colorsForBars, 
+                    borderColor: colorsForBars,  
+                    borderWidth: 1  
+                }]
+            };
+
+            // Chart 2
+            var barChartOptions2 = {
+                responsive: true,
+                maintainAspectRatio: false,
+                datasetFill: false,
+                scales: {
+                    x: {
+                        grid: {
+                            display: false
+                        }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            display: true 
+                        },
+                        ticks: {
+                            stepSize: 10
+                        }
+                    }
+                }
+            };
+
+           
+            new Chart(barChartCanvas2, {
+                type: 'bar',
+                data: barChartData2,
+                options: barChartOptions2
+            });
+        });
+
+    </script>
+}
+

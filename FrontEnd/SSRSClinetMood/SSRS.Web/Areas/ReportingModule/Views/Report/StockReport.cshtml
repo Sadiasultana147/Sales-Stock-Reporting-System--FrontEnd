@@ -1,0 +1,44 @@
+﻿@model SSRS.Web.Areas.ReportingModule.Models.ProductStockViewModel
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="card card-gray">
+            <div class="card-header">
+                <h3 class="card-title">Stock Report</h3>
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-3">
+                        <label>From Date</label>
+                        <input type="date" name="FromDate" id="FromDate" class="form-control" />
+                    </div>
+                    <div class="col-md-3">
+                        <label>To Date</label>
+                        <input type="date" name="ToDate" id="ToDate" class="form-control" />
+                    </div>
+                    <div class="col-md-3 d-flex align-items-end">
+                        <button id="btnCurrentStock" class="btn btn-md btn-warning w-100">Current Stock Report</button>
+                    </div>
+                    <div class="col-md-3 d-flex align-items-end">
+                        <button id="btnDateWiseStock" type="button" class="btn btn-secondary w-100">Date-wise Stock Report</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts
+{
+    <script src="~/adminlite/customejs/report.js"></script>
+    
+}

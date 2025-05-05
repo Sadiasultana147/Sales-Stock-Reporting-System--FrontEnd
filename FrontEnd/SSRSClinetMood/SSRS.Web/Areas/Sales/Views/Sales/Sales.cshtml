@@ -1,0 +1,85 @@
+﻿@model SSRS.Web.Areas.Sales.Models.SalesViewModel
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    
+    .select2-container--default .select2-selection--single {
+        height: 38px !important; 
+        display: flex;
+        align-items: center;
+        padding: 0 12px;
+        
+    }
+    .select2-container--default .select2-selection--single .select2-selection__rendered {
+         line-height: normal !important;
+         padding-left: 0px !important;
+         padding-right: 0px !important;
+     }
+</style>
+
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-0">
+            <div class="col-sm-6">
+                <h1 class="m-0">Sales</h1>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="card card-gray">
+            <div class="card-header">
+                <h4 class="card-title">Sales Management</h4>
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="card-body">
+                @Html.HiddenFor(model => model.Id)
+
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Product<span class="text-red" aria-hidden="true">*</span></label>
+                            @Html.DropDownListFor(model => model.ProductId, Model.ProductList, new { @class = "select2 custom-select-height", @style = "width:100%;", required = "required", onkeyup = "RequiredFieldValidate(this.id);" })
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="QuantitySold">Current Stock Qty <span class="text-danger">*</span></label>
+                            @Html.TextBoxFor(model => model.StockQty, new { @class = "form-control", id = "StockQty", disabled = "disabled" })
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="QuantitySold">Quantity Sold <span class="text-danger">*</span></label>
+                            @Html.TextBoxFor(model => model.QuantitySold, new { @class = "form-control", type = "number", min = "1", required = "required", id = "QuantitySold" })
+                        </div>
+                    </div>
+
+                    <div class="col-md- d-flex align-items-end">
+                        <div class="form-group w-100">
+                            <button id="btnSave" class="btn btn-primary btn-block" type="button">Submit</button>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+
+        
+        <div class="container-fluid" id="SalesList"></div>
+    </div>
+</section>
+
+@section Scripts {
+    <script src="~/adminlite/customejs/sales.js"></script>
+}

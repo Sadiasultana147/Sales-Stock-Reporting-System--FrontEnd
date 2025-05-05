@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\SSRS.Web.props" />
+</Project>

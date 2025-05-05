@@ -1,0 +1,46 @@
+﻿@model IEnumerable<SSRS.Web.Areas.Products.Models.ProductViewModel>
+
+<div class="card card-info">
+    <div class="card-header">
+        <h3 class="card-title">Product List</h3>
+        <div class="card-tools">
+            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                <i class="fas fa-minus"></i>
+            </button>
+        </div>
+    </div>
+    <!-- /.card-header -->
+    <div class="card-body table-responsive p-0">
+        <table id="tblProduct" class="table table-bordered table-striped table-hover text-nowrap">
+            <thead>
+                <tr>
+                    <th>Product Name</th>
+                    <th>SKU Code</th>
+                    <th>Price</th>
+                    <th>Stock Quantity</th>
+                    <th>Description</th>
+                    <th class="tableButton1">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.ProductName</td>
+                        <td>@item.SKUCode</td>
+                        <td>@item.Price</td>
+                        <td>@item.StockQuantity</td>
+                        <td>@item.Description</td>
+                        <td>
+                            <button class="btn btn-sm btn-info" type="button" onclick="GetProductFunction(@item.Id);"><i class="fas fa-edit"></i></button>
+                            <button class="btn btn-sm btn-danger" type="button" onclick="deleteProduct(@item.Id);"><i class="fas fa-trash-alt"></i></button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <!-- /.card-body -->
+</div>
+
+
